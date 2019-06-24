@@ -1,0 +1,19 @@
+<h1>Summary#index</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Account</th>      
+      <th>Amount</th>      
+    </tr>
+  </thead>
+  <tbody>
+    <% @expense_summary.each do |item| %>
+      <tr>
+        <td><%= item.account_name %></td>
+        <td><%= item.amount %></td>
+      </tr>
+    <% end %>
+  </tbody>  
+</table>
+    
