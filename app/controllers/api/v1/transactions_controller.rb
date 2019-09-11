@@ -9,6 +9,7 @@ class API::V1::TransactionsController < ApplicationController
 		puts "*"*25
 		puts params.inspect
 		TransactionCreator.new(params).create
+		render json: {status: "success"}
 	end
 
 end

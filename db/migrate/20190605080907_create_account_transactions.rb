@@ -1,6 +1,6 @@
-class CreateTransactions < ActiveRecord::Migration[5.2]
+class CreateAccountTransactions < ActiveRecord::Migration[5.2]
   def change
-    create_table :transactions do |t|
+    create_table :account_transactions do |t|
       t.string :transaction_id
       t.integer :account_id
       t.decimal :amount, :precision => 10, :scale => 2 

@@ -4,7 +4,7 @@ class TransactionsController < ApplicationController
   # GET /transactions
   # GET /transactions.json
   def index
-    @transactions = Transaction.all
+    @transactions = AccountTransaction.all
   end
 
   # GET /transactions/1
@@ -14,7 +14,7 @@ class TransactionsController < ApplicationController
 
   # GET /transactions/new
   def new
-    @transaction = Transaction.new
+    @transaction = AccountTransaction.new
   end
 
   # GET /transactions/1/edit
@@ -24,7 +24,7 @@ class TransactionsController < ApplicationController
   # POST /transactions
   # POST /transactions.json
   def create
-    @transaction = Transaction.new(transaction_params)
+    @transaction = AccountTransaction.new(transaction_params)
 
     respond_to do |format|
       if @transaction.save
@@ -64,7 +64,7 @@ class TransactionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transaction
-      @transaction = Transaction.find(params[:id])
+      @transaction = AccountTransaction.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
