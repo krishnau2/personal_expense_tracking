@@ -12,6 +12,10 @@ class TransactionCreator
 		@destination_account = nil
 	end
 
+	def generate_transaction_id
+        DateTime.now.to_i
+	end
+
 	def create
 
 		AccountTransaction.transaction do 
@@ -29,9 +33,11 @@ class TransactionCreator
 	end
 
 	def perform_expense_transactions(transaction_info)
+
+		transaction_id = generate_transaction_id
 		
 		AccountTransaction.credit_transaction({
-			transaction_id: "temp_123",
+			transaction_id: transaction_id,
 			account: @source_account,
 			transaction_date: @transaction_date,
 			comments: transaction_info["comments"],
@@ -39,7 +45,7 @@ class TransactionCreator
 		})
 
 		AccountTransaction.debit_transaction({
-			transaction_id: "temp_123",
+			transaction_id: transaction_id,
 			account: @destination_account,
 			transaction_date: @transaction_date,
 			comments: transaction_info["comments"],
