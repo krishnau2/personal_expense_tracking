@@ -3,12 +3,11 @@ class TransactionCreator
 	INCOME = 'Income'
 	TRANSFER = 'Transfer'
 
-	def initialize(form_data)
-		@form_data = form_data
-		@form_transaction_data = @form_data["transactions"]
-		@source_account = Account.find(@form_data["source_account_id"])
-		@transaction_date = @form_data["transaction_date"]
-		@transaction_type = @form_data["transaction_type"]
+	def initialize(transaction_data)
+		@transaction_data = transaction_data
+		@expense_transactions = @transaction_data["transactions"]
+		@source_account = Account.find(@transaction_data["source_account_id"])
+		@transaction_date = @transaction_data["transaction_date"]		
 		@destination_account = nil
 	end
 
@@ -19,48 +18,35 @@ class TransactionCreator
 	def create
 
 		AccountTransaction.transaction do 
-			@form_transaction_data.each do |form_transaction|
-				@destination_account = Account.find(form_transaction["destination_account_id"])
-				if @transaction_type == EXPENSE
-					perform_expense_transactions(form_transaction)
-				elsif @transaction_type == INCOME
-					perform_income_transactions
-				elsif @transaction_type == TRANSFER
-					perform_transfer_transactions
-				end
+			@expense_transactions.each do |expense_entry|
+				@destination_account = Account.find(expense_entry["destination_account_id"])
+				create_expense_transactions(expense_entry)
 			end
 		end
 	end
 
-	def perform_expense_transactions(transaction_info)
+	def create_expense_transactions(expense_entry)
 
 		transaction_id = generate_transaction_id
 		
-		AccountTransaction.credit_transaction({
+		AccountTransaction.create_credit_transaction({
 			transaction_id: transaction_id,
 			account: @source_account,
 			transaction_date: @transaction_date,
-			comments: transaction_info["comments"],
-			amount: transaction_info["amount"]
+			comments: expense_entry["comments"],
+			amount: expense_entry["amount"]
 		})
 
-		AccountTransaction.debit_transaction({
+		AccountTransaction.create_debit_transaction({
 			transaction_id: transaction_id,
 			account: @destination_account,
 			transaction_date: @transaction_date,
-			comments: transaction_info["comments"],
-			amount: transaction_info["amount"]
+			comments: expense_entry["comments"],
+			amount: expense_entry["amount"]
 		})
 	end
 
-	def perform_income_transactions
-		
-	end
-
-	def perform_transfer_transactions
-		
-	end
-
+	
 	# def perform_account_transaction
 	# 	Transaction.transaction do 
 	# 		@form_transaction_data.each do |form_transaction| 

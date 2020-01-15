@@ -1,7 +1,7 @@
 class AccountTransaction < ApplicationRecord
     belongs_to :account
 
-    def self.credit_transaction(data)
+    def self.create_credit_transaction(data)
     	self.create({
     		transaction_id: data[:transaction_id],
     		account_id: data[:account].id, 
@@ -11,7 +11,7 @@ class AccountTransaction < ApplicationRecord
     	})
     end
 
-    def self.debit_transaction(data)
+    def self.create_debit_transaction(data)
     	self.create({
     		transaction_id: data[:transaction_id],
     		account_id: data[:account].id, 
