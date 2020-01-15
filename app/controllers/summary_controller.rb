@@ -5,9 +5,9 @@ class SummaryController < ApplicationController
     # LEFT JOIN accounts on accounts.id = transactions.account_id  
     # group by account_id;
     # 
-    @expense_summary =  Transaction
+    @expense_summary =  AccountTransaction
                         .joins(:account)
-                        .select("transactions.account_id, accounts.name as account_name, sum(amount) as amount")
+                        .select("account_transactions.account_id, accounts.name as account_name, sum(amount) as amount")
                         .group('account_id')
     
     respond_to do |format|
